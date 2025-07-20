@@ -71,9 +71,8 @@ This repo:
 ---
 
 ## 👨‍💻 Author
-
-**Rajchamp10**  
-[GitHub Profile »](https://github.com/Rajchamp10)
+**SOHAM BHATTACHARYYA**(**Rajchamp10** )
+ [GitHub Profile »](https://github.com/Rajchamp10)
 
 ---
 
