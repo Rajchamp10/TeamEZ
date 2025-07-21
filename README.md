@@ -75,7 +75,8 @@ This repo:
  [GitHub Profile »](https://github.com/Rajchamp10)
 
 **REFERENCES**:
-"INTERESTME (https://github.com/SubhamitaBanik/InterestMate.git) 
+"INTERESTME"
+(https://github.com/SubhamitaBanik/InterestMate.git) 
  [GitHub Profile >>](https://github.com/SubhamitaBanik)
 
 ---
