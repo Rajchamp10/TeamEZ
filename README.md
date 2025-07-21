@@ -74,7 +74,9 @@ This repo:
 **SOHAM BHATTACHARYYA**(**Rajchamp10** )
  [GitHub Profile »](https://github.com/Rajchamp10)
 
- REFERENCES: "INTERESTME 
+**REFERENCES**:
+"INTERESTME (https://github.com/SubhamitaBanik/InterestMate.git) 
+ [GitHub Profile >>](https://github.com/SubhamitaBanik)
 
 ---
 
