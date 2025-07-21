@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
                 .addOnCompleteListener(this) { task ->
                     if (task.isSuccessful) {
                         Toast.makeText(this, "Registration successful", Toast.LENGTH_SHORT).show()
-                        // Redirect to another screen or clear fields
+                        startActivity(Intent(this, LoginActivity::class.java))
+                        finish()
                     } else {
                         Toast.makeText(this, "Error: ${task.exception?.message}", Toast.LENGTH_LONG).show()
                     }

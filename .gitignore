@@ -1,5 +1,5 @@
 *.iml
-.gradle
+.gradle/
 /local.properties
 /.idea/caches
 /.idea/libraries
@@ -14,3 +14,7 @@
 .cxx
 local.properties
 **/google-services.json
+**/secrets.properties
+.env
+/build/
+*/build/

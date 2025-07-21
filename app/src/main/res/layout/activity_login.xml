@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:gravity="center"
+    android:background="#D6000000">
+    <TextView
+        android:id="@+id/textViewTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="LOG IN"
+        android:textSize="28sp"
+        android:textColor="#1BFF00"
+        android:textStyle="bold"
+        android:layout_marginBottom="24dp" />
+
+
+    <EditText
+        android:id="@+id/emailEditText"
+        android:hint="Enter your registered email"
+        android:backgroundTint="#0FEF00"
+        android:textColorHint="#FFFF00"
+        android:inputType="textEmailAddress"
+        android:autofillHints="emailAddress"
+        android:minHeight="48dp"
+        android:drawableLeft="@android:drawable/ic_dialog_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/passwordEditText"
+        android:hint="Password"
+        android:textColor="#FFFFFF"
+        android:inputType="textPassword"
+        android:autofillHints="password"
+        android:backgroundTint="#0FEF00"
+        android:minHeight="48dp"
+        android:textColorHint="#C5FD01"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@android:drawable/ic_lock_lock"
+        android:layout_marginTop="12dp" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:text="LOGIN"
+        android:textStyle="bold"
+        android:textColor="#000000"
+        android:backgroundTint="#2ED509"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp" />
+
+    <TextView
+        android:id="@+id/signupRedirect"
+        android:text="New User? Sign up"
+        android:textColor="#36FF00"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp" />
+
+
+</LinearLayout>
+
+
