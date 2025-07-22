@@ -18,3 +18,42 @@ local.properties
 .env
 /build/
 */build/
+# Android Studio
+.idea/
+.gradle/
+local.properties
+*.iml
+.DS_Store
+
+# Build output
+/build/
+*/build/
+
+# Keystore files
+*.jks
+*.keystore
+
+# Log files
+*.log
+
+# Generated files
+.cxx/
+captures/
+
+# IntelliJ
+*.iws
+*.ipr
+
+# OS-specific
+Thumbs.db
+ehthumbs.db
+desktop.ini
+
+# Git
+*.orig
+
+# Crashlytics
+crashlytics-build.properties
+
+# Firebase
+google-services.json

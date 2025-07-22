@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="16dp"
+    android:background="#D6000000">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        >
+
+        <!-- Profile Picture -->
+        <ImageView
+            android:id="@+id/imageProfile"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_dummy_profile"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Tap to change profile photo"
+            android:textColor="#4FFF00"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp" />
+
+        <!-- First Name -->
+        <EditText
+            android:id="@+id/editFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="First Name"
+            android:textColorHint="#10FF00"
+            android:inputType="textPersonName"
+            android:layout_marginTop="16dp" />
+
+        <!-- Last Name -->
+        <EditText
+            android:id="@+id/editLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Last Name"
+            android:textColorHint="#10FF00"
+            android:inputType="textPersonName"
+            android:layout_marginTop="8dp" />
+
+        <!-- Date of Birth -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical">
+
+            <EditText
+                android:id="@+id/editDOB"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:hint="Date of Birth"
+                android:textColorHint="#10FF00"
+                android:focusable="false"
+                android:clickable="true"
+                android:inputType="none" />
+
+            <ImageView
+                android:id="@+id/iconCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@android:drawable/ic_menu_my_calendar"
+                android:padding="8dp" />
+        </LinearLayout>
+
+        <!-- Interest Dropdown -->
+        <AutoCompleteTextView
+            android:id="@+id/dropdownInterest"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Select Interest"
+            android:textColorHint="#10FF00"
+            android:layout_marginTop="8dp"
+            android:inputType="none"
+            android:focusable="false" />
+
+        <!-- Location -->
+        <EditText
+            android:id="@+id/editLocation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Enter Location"
+            android:textColorHint="#10FF00"
+            android:inputType="text"
+            android:layout_marginTop="8dp" />
+
+        <TextView
+            android:id="@+id/textDetectedCity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Detected City: Not Available"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/teal_700" />
+
+        <!-- Buttons -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="16dp">
+
+            <Button
+                android:id="@+id/btnSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/black"
+                android:text="Save" />
+
+            <Button
+                android:id="@+id/btnEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:backgroundTint="@color/common_google_signin_btn_text_dark_disabled"
+                android:enabled="false"
+                android:layout_marginStart="16dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
