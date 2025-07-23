@@ -23,6 +23,7 @@ TeamEZ makes it easier to:
 - 👤 **User profiles with hobbies**
 - 👥 **Join or apply to local groups**
 - 📨 **Friend request and chat (planned)**
+-    **User friendly interface**
 
 ---
 
