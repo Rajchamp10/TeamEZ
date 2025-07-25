@@ -68,6 +68,7 @@ This repo:
 - 📆 Group event scheduling and RSVP
 - 📢 Push notifications for group invites and activity alerts
 - 🧭 In-app map integration to view nearby groups
+- 👥️️ In app Group calls 
 
 ---
 
