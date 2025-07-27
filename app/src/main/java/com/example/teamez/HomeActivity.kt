@@ -1,25 +1,26 @@
 package com.example.teamez
 
+import android.content.Intent
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.commit
-import com.example.teamez.databinding.ActivityHomeBinding
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import com.example.teamez.ui.theme.TeamEZTheme
+import com.google.firebase.auth.FirebaseAuth
 
+class HomeActivity : ComponentActivity() {
 
-class HomeActivity : AppCompatActivity() {
-
-    private lateinit var binding: ActivityHomeBinding
+    private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        binding = ActivityHomeBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+        auth = FirebaseAuth.getInstance()
 
-        binding.btnProfile.setOnClickListener {
-            supportFragmentManager.commit {
-                replace(R.id.fragmentContainer, ProfileFragment())
-                addToBackStack(null)
+        setContent {
+            TeamEZTheme {
+                HomeScreen(
+
+                )
             }
         }
     }

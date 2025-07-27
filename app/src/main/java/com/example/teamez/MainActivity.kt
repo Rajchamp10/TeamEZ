@@ -9,6 +9,7 @@ import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
+
     private lateinit var auth: FirebaseAuth
 
     @SuppressLint("MissingInflatedId")
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         loginText.setOnClickListener {
-            startActivity(Intent(this, LoginActivity::class.java)) // You'll create this next
+            startActivity(Intent(this, LoginActivity::class.java))
         }
     }
 }

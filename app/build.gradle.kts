@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.teamez"
-    compileSdk = 35
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "com.example.teamez"
@@ -15,6 +15,7 @@ android {
         targetSdk = 34
         versionCode = 1
         versionName = "1.0"
+        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildFeatures {
@@ -64,6 +65,7 @@ dependencies {
 
     // Coil (Image loading)
     implementation("io.coil-kt:coil-compose:2.4.0")
+    implementation(libs.androidx.navigation.runtime.android)
 
     // Testing
     testImplementation(libs.junit)
@@ -72,6 +74,12 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    // Java utilities
+    implementation("org.jetbrains.kotlin:kotlin-stdlib:1.9.10")
+
+    debugImplementation("androidx.compose.ui:ui-tooling:1.5.1")
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.1")
+
 }
 
 // Google Services plugin for Firebase

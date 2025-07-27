@@ -1,245 +1,263 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
-
 package com.example.teamez
 
-import android.app.DatePickerDialog
-import android.content.Intent
-import android.net.Uri
-import android.provider.MediaStore
-import android.widget.DatePicker
+import androidx.compose.foundation.layout.FlowRow
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.auth.FirebaseAuth
 import android.widget.Toast
+
+import android.Manifest
+import android.annotation.SuppressLint
+import android.content.Context
+import android.location.Geocoder
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.*
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
+import androidx.compose.ui.*
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.net.toUri
-import coil.compose.rememberAsyncImagePainter
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import coil.compose.AsyncImage
+import com.google.accompanist.permissions.*
+import com.google.android.gms.location.LocationServices
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberPermissionState
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.material3.FilterChip
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+
+import java.text.SimpleDateFormat
 import java.util.*
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalPermissionsApi::class)
 @Composable
 fun ProfileScreen() {
     val context = LocalContext.current
 
+    val locationPermissionState = rememberPermissionState(Manifest.permission.ACCESS_FINE_LOCATION)
+
     var firstName by remember { mutableStateOf("") }
     var lastName by remember { mutableStateOf("") }
-    var location by remember { mutableStateOf("") }
+    var location by remember { mutableStateOf("Tap to detect") }
     var birthDate by remember { mutableStateOf("") }
     var profileImageUri by remember { mutableStateOf<Uri?>(null) }
 
+    val interests = listOf("Cricket", "Turf Football", "Trekking", "Movies", "Travel")
     val selectedInterests = remember { mutableStateListOf<String>() }
-    val allInterests = listOf("Sports", "Music", "Travel", "Reading", "Gaming", "Cooking", "Photography", "Movies")
 
     val imagePickerLauncher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult()
-    ) { result ->
-        val uri = result.data?.data
-        if (uri != null) {
-            profileImageUri = uri
-        }
-    }
-
-    // 🧠 Load saved data when screen loads
-    LaunchedEffect(Unit) {
-        val uid = FirebaseAuth.getInstance().currentUser?.uid
-        if (uid != null) {
-            FirebaseFirestore.getInstance()
-                .collection("users")
-                .document(uid)
-                .get()
-                .addOnSuccessListener { document ->
-                    if (document != null && document.exists()) {
-                        firstName = document.getString("firstName") ?: ""
-                        lastName = document.getString("lastName") ?: ""
-                        location = document.getString("location") ?: ""
-                        birthDate = document.getString("birthDate") ?: ""
-                        val uriString = document.getString("profileImageUri") ?: ""
-                        if (uriString.isNotEmpty()) {
-                            profileImageUri = uriString.toUri()
-                        }
-                        selectedInterests.clear()
-                        (document.get("interests") as? List<*>)?.filterIsInstance<String>()?.let {
-                            selectedInterests.addAll(it)
-                        }
-                    }
-                }
-        }
+        contract = ActivityResultContracts.GetContent()
+    ) { uri: Uri? ->
+        profileImageUri = uri
     }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(16.dp)
+            .verticalScroll(rememberScrollState())
+            .padding(20.dp)
+            .background(Color(0xFFF5F5F5)),
+        verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-
-        Text("Profile", fontSize = 26.sp, color = Color.Black)
-
-        Spacer(modifier = Modifier.height(20.dp))
-
-        // Profile Picture
+        // ---------- Profile Picture Section ----------
         Box(
             modifier = Modifier
                 .size(120.dp)
+                .clip(CircleShape)
+                .background(Color.LightGray)
                 .align(Alignment.CenterHorizontally)
-                .border(2.dp, Color.Gray, CircleShape)
-                .clickable {
-                    val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-                    imagePickerLauncher.launch(intent)
-                },
-            contentAlignment = Alignment.Center
+                .clickable { imagePickerLauncher.launch("image/*") }
         ) {
             if (profileImageUri != null) {
-                Image(
-                    painter = rememberAsyncImagePainter(profileImageUri),
+                AsyncImage(
+                    model = profileImageUri,
                     contentDescription = "Profile Picture",
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(110.dp)
-                        .background(Color.LightGray, CircleShape)
-                        .clip(CircleShape)
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Crop
                 )
             } else {
-                Icon(Icons.Default.AccountCircle, contentDescription = null, modifier = Modifier.size(110.dp), tint = Color.Gray)
+                Text(
+                    text = "Tap to add image",
+                    color = Color.DarkGray,
+                    fontSize = 12.sp,
+                    modifier = Modifier.align(Alignment.Center)
+                )
             }
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            "Change Picture",
+            color = Color.Blue,
+            fontSize = 14.sp,
+            modifier = Modifier
+                .align(Alignment.CenterHorizontally)
+                .clickable { imagePickerLauncher.launch("image/*") }
+        )
 
-        // First Name
+        // ---------- Text Fields ----------
+        Text("First Name", fontSize = 14.sp, color = Color.Black)
         OutlinedTextField(
             value = firstName,
             onValueChange = { firstName = it },
-            label = { Text("First Name") },
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Last Name
+        Text("Last Name", fontSize = 14.sp, color = Color.Black)
         OutlinedTextField(
             value = lastName,
             onValueChange = { lastName = it },
-            label = { Text("Last Name") },
+            singleLine = true,
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Location
+        // ---------- Location Field ----------
+        Text("Location", fontSize = 14.sp, color = Color.Black)
         OutlinedTextField(
             value = location,
-            onValueChange = { location = it },
-            label = { Text("Location") },
-            modifier = Modifier.fillMaxWidth()
+            onValueChange = {},
+            enabled = false,
+            modifier = Modifier
+                .fillMaxWidth()
+                .clickable {
+                    if (!locationPermissionState.status.isGranted) {
+                        locationPermissionState.launchPermissionRequest()
+                    } else {
+                        getUserCity(context) { city ->
+                            location = city
+                        }
+                    }
+                }
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
-
-        // Date of Birth
-        val calendar = Calendar.getInstance()
-        val datePickerDialog = DatePickerDialog(
-            context,
-            { _: DatePicker, year: Int, month: Int, day: Int ->
-                birthDate = "$day/${month + 1}/$year"
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-        )
+        // ---------- Date Picker ----------
+        Text("Date of Birth", fontSize = 14.sp, color = Color.Black)
+        val datePickerState = rememberDatePickerState()
+        var openDialog by remember { mutableStateOf(false) }
 
         OutlinedTextField(
             value = birthDate,
             onValueChange = {},
-            label = { Text("Birthdate") },
-            trailingIcon = {
-                Icon(Icons.Default.DateRange, contentDescription = "Pick Date", modifier = Modifier.clickable {
-                    datePickerDialog.show()
-                })
-            },
             readOnly = true,
+            trailingIcon = {
+                IconButton(onClick = { openDialog = true }) {
+                    Icon(Icons.Default.DateRange, contentDescription = "Pick Date")
+                }
+            },
             modifier = Modifier.fillMaxWidth()
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Text("Select Interests", fontSize = 18.sp, color = Color.Black)
-
-        Spacer(modifier = Modifier.height(8.dp))
-
-        LazyVerticalGrid(
-            columns = GridCells.Fixed(2),
-            content = {
-                items(allInterests) { interest ->
-                    val isSelected = interest in selectedInterests
-                    FilterChip(
-                        selected = isSelected,
-                        onClick = {
-                            if (isSelected) selectedInterests.remove(interest)
-                            else selectedInterests.add(interest)
-                        },
-                        label = { Text(interest) },
-                        modifier = Modifier.padding(4.dp)
-                    )
+        if (openDialog) {
+            DatePickerDialog(
+                onDismissRequest = { openDialog = false },
+                confirmButton = {
+                    TextButton(onClick = {
+                        datePickerState.selectedDateMillis?.let {
+                            birthDate = formatDate(it)
+                        }
+                        openDialog = false
+                    }) { Text("OK") }
+                },
+                dismissButton = {
+                    TextButton(onClick = { openDialog = false }) { Text("Cancel") }
                 }
-            },
-            modifier = Modifier.height(150.dp)
-        )
+            ) {
+                DatePicker(state = datePickerState, showModeToggle = true)
+            }
+        }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        // ---------- Interests ----------
+        Text("Interests", fontSize = 14.sp, color = Color.Black)
 
-        // Save Button
+        FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+            interests.forEach { interest ->
+                FilterChip(
+                    selected = selectedInterests.contains(interest),
+                    onClick = {
+                        if (selectedInterests.contains(interest))
+                            selectedInterests.remove(interest)
+                        else
+                            selectedInterests.add(interest)
+                    },
+                    label = { Text(interest) }
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(20.dp))
+
         Button(
             onClick = {
-                val uid = FirebaseAuth.getInstance().currentUser?.uid
-                if (uid != null) {
-                    val userProfile = hashMapOf(
-                        "firstName" to firstName,
-                        "lastName" to lastName,
-                        "location" to location,
-                        "birthDate" to birthDate,
-                        "interests" to selectedInterests,
-                        "profileImageUri" to (profileImageUri?.toString() ?: "")
-                    )
-
-                    FirebaseFirestore.getInstance()
-                        .collection("users")
-                        .document(uid)
-                        .set(userProfile)
-                        .addOnSuccessListener {
-                            Toast.makeText(context, "Profile saved!", Toast.LENGTH_SHORT).show()
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(context, "Error saving: ${it.message}", Toast.LENGTH_LONG).show()
-                        }
-                } else {
+                val userId = FirebaseAuth.getInstance().currentUser?.uid
+                if (userId == null) {
                     Toast.makeText(context, "User not logged in", Toast.LENGTH_SHORT).show()
+                    return@Button
                 }
-            },
-            modifier = Modifier.fillMaxWidth()
+
+                val userProfile = hashMapOf(
+                    "firstName" to firstName,
+                    "lastName" to lastName,
+                    "location" to location,
+                    "birthDate" to birthDate,
+                    "interests" to selectedInterests.toList(),
+                    "profileImageUri" to profileImageUri?.toString()
+                )
+
+                FirebaseFirestore.getInstance()
+                    .collection("users")
+                    .document(userId)
+                    .set(userProfile)
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "Profile saved!", Toast.LENGTH_SHORT).show()
+                    }
+                    .addOnFailureListener { e ->
+                        Toast.makeText(context, "Failed to save: ${e.localizedMessage}", Toast.LENGTH_LONG).show()
+                    }
+            }
+
         ) {
-            Text("Save")
+            Text("Save", color = Color.White)
         }
     }
+}
+
+@SuppressLint("MissingPermission")
+fun getUserCity(context: Context, onCityDetected: (String) -> Unit) {
+    val locationClient = LocationServices.getFusedLocationProviderClient(context)
+
+    locationClient.lastLocation.addOnSuccessListener { location ->
+        if (location != null) {
+            val geocoder = Geocoder(context, Locale.getDefault())
+            val addresses = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            val city = addresses?.firstOrNull()?.locality ?: "Unknown"
+            onCityDetected(city)
+        } else {
+            onCityDetected("Location unavailable")
+        }
+    }.addOnFailureListener {
+        onCityDetected("Failed to detect")
+    }
+}
+
+fun formatDate(millis: Long): String {
+    val sdf = SimpleDateFormat("dd-MM-yyyy", Locale.getDefault())
+    return sdf.format(Date(millis))
 }
