@@ -52,7 +52,7 @@ desktop.ini
 # Git
 *.orig
 
-
+#crashlytics
 crashlytics-build.properties
 
 # Firebase
