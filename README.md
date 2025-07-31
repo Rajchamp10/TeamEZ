@@ -1,6 +1,6 @@
 # 🤝 TeamEZ — Connect Through Shared Interests
 
-**TeamEZ** is a social Android app that helps users discover like-minded people and nearby groups based on shared interests and location. Whether it’s playing cricket on a turf, watching a movie, trekking, or travelling — TeamEZ connects you with the right crowd.
+**TeamEZ** is a social Android app that helps users discover like-minded people and nearby groups based on shared interests and location. Whether it’s playing cricket or football on a turf, watching a movie, trekking, or travelling — TeamEZ connects you with the right crowd.
 
 ---
 
